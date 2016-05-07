@@ -232,37 +232,3 @@ extension Graph : CustomStringConvertible, GraphProtocol {
     }
 }
 
-// 7 --> 8
-// |
-//  ---> 11--> 3
-//       ^
-//       |
-// 5-----
-
-let sharedEdge:Edge<Int,Int> = Edge(node: Node(value:3))
-var sharedNode:Node<Int,Int> = Node(value:11, edges:[sharedEdge])
-
-var graph:Graph = Graph(nodes:[
-    Node(value:7, edges:[
-        Edge(node: Node(value:8), weight: 66),
-        Edge(node: sharedNode),
-    ]),
-    Node(value:5, edges:[
-        Edge(node: sharedNode)
-    ])
-])
-
-print(graph)
-print(graph.allNodes.map{$0.value})
-
-let node = graph.find(nodeValue: 5)
-
-sharedNode.remove(edge: sharedEdge)
-print(graph)
-
-sharedNode.edges.append(sharedEdge)
-print(graph)
-print(graph.removing(node: graph.find(nodeValue: 11)!))
-print(graph.find(nodeValue: 7)!.neighbours)
-print(graph.ancestors(node: sharedNode))
-
