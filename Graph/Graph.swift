@@ -29,10 +29,35 @@ protocol GraphProtocol {
 }
 
 class Graph<T:Comparable, U:Comparable> : GraphProtocol {
-    private var nodes:[Node<T,U>]
+    private var nodes:[Node<T,U>] = []
     
     init(nodes:[Node<T,U>]){
         self.nodes = nodes
+    }
+    
+    init(graph:Graph<T,U>){
+        self.nodes = deepCopyNodes(graph.allNodes)
+    }
+    
+    private func deepCopyNodes(nodes:[Node<T,U>]) -> [Node<T,U>]{
+        var map:[(original:Node<T,U>, copy:Node<T,U>)] = []
+        let result = nodes.map({(node:Node<T,U>) -> Node<T,U> in
+            let copy = Node<T,U>(node:node)
+            map.append((original: node, copy: copy))
+            return copy
+        })
+        
+        //make the edges to point to the nodes in the "self" graph
+        for node in result{
+            for edge in node.edges {
+                //lookup for edge.node in the map
+                if let newNode = map.filter({$0.original == edge.node}).first?.copy {
+                    node.disconnect(edge: edge)
+                    node.connect(to: newNode, weight: edge.weight)
+                }
+            }
+        }
+        return result
     }
     
     subscript(nodeValue:T) -> Node<T,U>? {
@@ -148,17 +173,14 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func adding(node:Node<T,U>) -> Graph<T,U> {
-        if !self.allNodes.contains(node) {
-            return Graph<T,U>(nodes: self.nodes + [node])
-        }
-        else{
-            return self
-        }
+        let newGraph = Graph<T,U>(graph: self)
+        newGraph.add(node)
+        return newGraph
     }
     
     func adding(nodeValue nodeValue:T) -> Graph<T,U> {
         let node = Node<T,U>(value: nodeValue)
-        return Graph<T,U>(nodes: self.nodes + [node])
+        return adding(node)
     }
     
     func connect(edgeFrom edgeFrom: Node<T, U>, to edgeTo: Node<T, U>, weight: U?) {
@@ -191,7 +213,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func remove(node: Node<T, U>) {
-        self.nodes = self.nodes.filter{$0 != node}.map{$0.copyWithZone(nil) as! Node<T,U>}
+        self.nodes = self.nodes.filter{$0 != node}.map{Node<T,U>(node:$0)}
         if let ancestors = self.ancestors(node: node) {
             for ancestor in ancestors {
                 ancestor.filterEdges(predicate: {$0.node != node})
@@ -200,7 +222,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func removing(node: Node<T, U>) -> Graph<T,U> {
-        let newNodes = self.nodes.filter{$0 != node}.map{$0.copyWithZone(nil) as! Node<T,U>}
+        let newNodes = deepCopyNodes(self.nodes.filter{$0 != node}.map{Node<T,U>(node:$0)})
         let newGraph = Graph(nodes: newNodes)
         newGraph.remove(node)
         

@@ -39,6 +39,21 @@ class GraphTests: XCTestCase {
         super.tearDown()
     }
     
+    func testCopy() {
+        let newGraph = Graph(graph: testGraph)
+        
+        XCTAssertTrue(testGraph.allNodes.count == 5)
+        XCTAssertTrue(newGraph.allNodes.count == 5)
+        
+        testGraph.remove(testGraph[11]!)
+        XCTAssertTrue(testGraph.allNodes.count == 3)
+        XCTAssertTrue(newGraph.allNodes.count == 5)
+
+        newGraph.add(nodeValue: 89)
+        XCTAssertTrue(testGraph.allNodes.count == 3)
+        XCTAssertTrue(newGraph.allNodes.count == 6)
+    }
+    
     func testAllNodes() {
         XCTAssertTrue(testGraph.allNodes.count == 5)
         XCTAssertTrue(testGraph.allNodes.contains(testGraph[7]!))
@@ -160,5 +175,6 @@ class GraphTests: XCTestCase {
         
         testGraph.remove(testGraph[11]!)
         XCTAssertNil(testGraph[11])
+        XCTAssertNil(testGraph[3])
     }
 }

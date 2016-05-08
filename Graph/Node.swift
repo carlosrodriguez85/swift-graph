@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Node<T:Comparable, U:Comparable> : NSCopying {
+class Node<T:Comparable, U:Comparable> {
     private(set) var value:T
     private(set) var edges:[Edge<T,U>]
     
@@ -17,8 +17,9 @@ class Node<T:Comparable, U:Comparable> : NSCopying {
         self.edges = edges
     }
     
-    @objc func copyWithZone(zone: NSZone) -> AnyObject {
-        return Node(value: value, edges: edges)
+    init(node:Node<T,U>){
+        self.value = node.value
+        self.edges = node.edges
     }
     
     func filterEdges(predicate predicate:(Edge<T,U>)->Bool) {
