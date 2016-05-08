@@ -20,7 +20,7 @@ class GraphTests: XCTestCase {
         
         // 7 --> 8
         // |
-        //  ---> 11 <--> 3
+        //  ---> (11<->11) <--> 3
         //       ^
         //       |
         // 5-----
@@ -34,6 +34,7 @@ class GraphTests: XCTestCase {
                 ])
         ])
         
+        testGraph.connect(edgeFrom: sharedNode, to: sharedNode, weight: nil)
         testGraph.connect(edgeFrom: sharedFinalNode, to: sharedNode, weight: 98)
     }
     
@@ -139,7 +140,7 @@ class GraphTests: XCTestCase {
     
     func testDescription() {
         let description = testGraph.description
-        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->(3)\n(3)->[98](11)\n"
+        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->{(3),(11)}\n(3)->[98](11)\n"
         
         XCTAssertTrue(description == testDescription)
     }
