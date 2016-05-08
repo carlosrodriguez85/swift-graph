@@ -1,110 +1,34 @@
-//: Playground - noun: a place where people can play
+//
+//  Edge.swift
+//  Graph
+//
+//  Created by Carlos Rodríguez Domínguez on 8/5/16.
+//  Copyright © 2016 Everyware Technologies. All rights reserved.
+//
 
-import UIKit
+import Foundation
 
-class Edge<T:Comparable,U:Comparable> : NSCopying {
-    private(set) var node:Node<T, U>
-    private(set) var weight:U?
+protocol GraphProtocol {
+    associatedtype NodeType : Comparable
+    associatedtype WeightType : Comparable
     
-    init(node:Node<T,U>, weight:U? = nil){
-        self.node = node
-        self.weight = weight
-    }
-    
-    @objc func copyWithZone(zone: NSZone) -> AnyObject {
-        let edge = Edge(node: node.copyWithZone(zone) as! Node<T, U>, weight: weight)
-        return edge
-    }
+    func isAdjacent(node node:Node<NodeType,WeightType>, ancestor ancestorNode:Node<NodeType,WeightType>) -> Bool
+    func adding(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
+    func adding(nodeValue nodeValue:NodeType) -> Graph<NodeType,WeightType>
+    func removing(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
+    func find(nodeValue nodeValue:NodeType) -> Node<NodeType,WeightType>?
+    subscript(nodeValue:NodeType) -> Node<NodeType, WeightType>? { get }
 }
 
-extension Edge : CustomStringConvertible, Comparable {
-    var description:String{
-        if let weight = weight {
-            return "-[\(weight)]->\(node)"
-        }
-        else{
-            return "-->\(node)"
-        }
-    }
-}
-
-func == <T:Comparable, U:Comparable>(a:Edge<T,U>, b:Edge<T,U>) -> Bool{
-    let firstNode = a.node
-    let secondNode = b.node
-    
-    return firstNode == secondNode && a.weight == b.weight
-}
-
-func < <T:Comparable, U:Comparable>(a:Edge<T,U>, b:Edge<T,U>) -> Bool{
-    return a.weight < b.weight
-}
-
-class Node<T:Comparable, U:Comparable> : NSCopying {
-    private(set) var value:T
-    private(set) var edges:[Edge<T,U>]
-    
-    init(value:T, edges:[Edge<T,U>] = []){
-        self.value = value
-        self.edges = edges
-    }
-    
-    @objc func copyWithZone(zone: NSZone) -> AnyObject {
-        var newEdges = [Edge<T,U>]()
-        for edge in edges{
-            let newEdge = edge.copyWithZone(zone) as! Edge<T,U>
-            newEdges.append(newEdge)
-        }
-        
-        return Node(value: value, edges: newEdges)
-    }
-}
-
-extension Node : CustomStringConvertible, Comparable {
-    var description:String{
-        if edges.isEmpty {
-            return "(\(value))"
-        }
-        else if edges.count == 1 {
-            return "(\(value))\(edges.first!)\n"
-        }
-        else{
-            return edges.reduce("(\(value))\n", combine: { $0 + "\t\($1)\n" })
-        }
-    }
-    
-    var neighbours:[Node]{
-        return edges.map{$0.node}
-    }
-    
-    func connect(to node:Node<T,U>, weight:U?){
-        let newEdge = Edge(node: node, weight: weight)
-        edges.append(newEdge)
-    }
-    
-    func isConnected(to node:Node<T,U>) -> Bool {
-        return neighbours.contains(node)
-    }
-    
-    func remove(edge edge:Edge<T,U>) {
-        if let idx = edges.indexOf(edge) {
-            edges.removeAtIndex(idx)
-        }
-    }
-}
-
-func == <T:Comparable, U:Comparable>(a:Node<T,U>, b:Node<T,U>) -> Bool{
-    return a.value == b.value && a.edges == b.edges
-}
-
-func < <T:Comparable, U:Comparable>(a:Node<T,U>, b:Node<T,U>) -> Bool{
-    return a.value < b.value
-}
-
-struct Graph<T:Comparable, U:Comparable> {
+struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
     private var nodes:[Node<T,U>]
     
     init(nodes:[Node<T,U>]){
         self.nodes = nodes
+    }
+    
+    subscript(nodeValue:T) -> Node<T,U>? {
+        return find(nodeValue: nodeValue)
     }
     
     private func isVisited(node:Node<T,U>, visitedNodes:[Node<T,U>]) -> Bool {
@@ -130,7 +54,7 @@ struct Graph<T:Comparable, U:Comparable> {
         return result
     }
     
-    func nextNode(inout visitedNodes visitedNodes:[Node<T,U>], inout lastVisitedNode:Node<T,U>?) -> Node<T,U>? {
+    private func nextNode(inout visitedNodes visitedNodes:[Node<T,U>], inout lastVisitedNode:Node<T,U>?) -> Node<T,U>? {
         if self.nodes.isEmpty {
             return nil
         }
@@ -174,22 +98,10 @@ struct Graph<T:Comparable, U:Comparable> {
         
         return nil
     }
-}
-
-protocol GraphProtocol {
-    associatedtype NodeType : Comparable
-    associatedtype WeightType : Comparable
     
-    func adjacent(firstNode firstNode:Node<NodeType,WeightType>, secondNode:Node<NodeType,WeightType>) -> Bool
-    func adding(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
-    func removing(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
-    func find(nodeValue nodeValue:NodeType) -> Node<NodeType,WeightType>?
-}
-
-extension Graph : CustomStringConvertible, GraphProtocol {
-    func adjacent(firstNode firstNode:Node<T,U>, secondNode:Node<T,U>) -> Bool {
-        for edge in firstNode.edges{
-            if edge.node == secondNode{
+    func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
+        for edge in ancestorNode.edges{
+            if edge.node == node{
                 return true
             }
         }
@@ -198,6 +110,11 @@ extension Graph : CustomStringConvertible, GraphProtocol {
     }
     
     func adding(node node:Node<T,U>) -> Graph<T,U> {
+        return Graph<T,U>(nodes: self.nodes + [node])
+    }
+    
+    func adding(nodeValue nodeValue:T) -> Graph<T,U> {
+        let node = Node<T,U>(value: nodeValue)
         return Graph<T,U>(nodes: self.nodes + [node])
     }
     
@@ -216,12 +133,14 @@ extension Graph : CustomStringConvertible, GraphProtocol {
         let newGraph = Graph(nodes: newNodes)
         let ancestors = newGraph.ancestors(node: node)
         for ancestor in ancestors {
-            ancestor.edges = ancestor.edges.filter{$0.node != node}.map{$0.copyWithZone(nil) as! Edge<T,U>}
+            ancestor.filterEdges(predicate: {$0.node != node})
         }
         
         return newGraph
     }
-    
+}
+
+extension Graph : CustomStringConvertible {
     var description: String{
         if self.nodes.isEmpty {
             return "()"
@@ -229,6 +148,36 @@ extension Graph : CustomStringConvertible, GraphProtocol {
         else {
             return nodes.reduce("", combine: {$0+"\($1)"})
         }
+    }
+}
+
+struct GraphGenerator<T:Comparable,U:Comparable> : GeneratorType {
+    private var generatorVisitedNodes:[Node<T,U>] = []
+    private var generatorLastVisitedNode:Node<T,U>? = nil
+    private var graph:Graph<T,U>
+    
+    init(graph:Graph<T,U>){
+        self.graph = graph
+    }
+    
+    mutating func next() -> Node<T,U>? {
+        let result = graph.nextNode(visitedNodes: &generatorVisitedNodes, lastVisitedNode: &generatorLastVisitedNode)
+        if result == nil {
+            generatorVisitedNodes = []
+            generatorLastVisitedNode = nil
+        }
+        
+        return result
+    }
+}
+
+extension Graph : SequenceType {
+    func generate() -> GraphGenerator<T,U> {
+        return GraphGenerator(graph: self)
+    }
+    
+    func underestimateCount() -> Int {
+        return self.nodes.count
     }
 }
 

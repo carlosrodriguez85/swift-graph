@@ -46,27 +46,57 @@ class GraphTests: XCTestCase {
     func testFind(){
         XCTAssertNotNil(testGraph.find(nodeValue: 11))
         XCTAssertNil(testGraph.find(nodeValue: 35))
+        
+        XCTAssertNotNil(testGraph[11])
+        XCTAssertNil(testGraph[35])
     }
     
     func testAdjacent() {
-        //TODO
+        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[7]!))
+        
+        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[7]!, ancestor: testGraph[11]!))
+        
+        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[7]!, ancestor: testGraph[5]!))
     }
     
     func testNeighbours() {
         //TODO
     }
     
-    func testAdding() {
+    func testAddingNode() {
         //TODO
     }
     
+    func testAddingEdge() {
+        //TODO
+    }
+    
+    func testDescription() {
+        let description = testGraph.description
+        let testDescription = "(7)\n\t-[66]->(8)\n\t-->(11)-->(3)\n\n(5)-->(11)-->(3)\n\n"
+        
+        XCTAssertTrue(description == testDescription)
+    }
+    
+    func testIteration() {
+        var count = 0
+        var allNodes:[Node<Int,Int>] = []
+        for node in testGraph {
+            count += 1
+            allNodes.append(node)
+        }
+        
+        XCTAssertTrue(count == testGraph.allNodes.count)
+        XCTAssertTrue(allNodes == testGraph.allNodes)
+    }
+    
     func testRemoving() {
-        let newGraph = testGraph.removing(node: testGraph.find(nodeValue: 11)!)
+        let newGraph = testGraph.removing(node: testGraph[11]!)
         
         XCTAssertTrue(newGraph.allNodes.count == 3)
         XCTAssertTrue(testGraph.allNodes.count == 5)
         
-        XCTAssertNil(newGraph.find(nodeValue: 11))
-        XCTAssertNotNil(testGraph.find(nodeValue: 11))
+        XCTAssertNil(newGraph[11])
+        XCTAssertNotNil(testGraph[11])
     }
 }

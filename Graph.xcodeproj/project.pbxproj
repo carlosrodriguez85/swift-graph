@@ -11,6 +11,8 @@
 		8EBADF451CDE651400283186 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EBADF3A1CDE651400283186 /* Graph.framework */; };
 		8EBADF4A1CDE651400283186 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF491CDE651400283186 /* GraphTests.swift */; };
 		8EBADF551CDE653300283186 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF541CDE653300283186 /* Graph.swift */; };
+		8EBADF571CDF5E5000283186 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF561CDF5E5000283186 /* Node.swift */; };
+		8EBADF591CDF5F9A00283186 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF581CDF5F9A00283186 /* Edge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,8 @@
 		8EBADF491CDE651400283186 /* GraphTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		8EBADF4B1CDE651400283186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EBADF541CDE653300283186 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		8EBADF561CDF5E5000283186 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		8EBADF581CDF5F9A00283186 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,8 @@
 		8EBADF3C1CDE651400283186 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				8EBADF581CDF5F9A00283186 /* Edge.swift */,
+				8EBADF561CDF5E5000283186 /* Node.swift */,
 				8EBADF541CDE653300283186 /* Graph.swift */,
 				8EBADF3D1CDE651400283186 /* Graph.h */,
 				8EBADF3F1CDE651400283186 /* Info.plist */,
@@ -198,6 +204,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EBADF551CDE653300283186 /* Graph.swift in Sources */,
+				8EBADF571CDF5E5000283186 /* Node.swift in Sources */,
+				8EBADF591CDF5F9A00283186 /* Edge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
