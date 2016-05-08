@@ -50,6 +50,15 @@ extension Node : CustomStringConvertible, Comparable {
         }
     }
     
+    func connection(to node:Node<T,U>) -> Edge<T,U>? {
+        if let idx = self.edges.indexOf({ $0.node == node }) {
+            return self.edges[idx]
+        }
+        else{
+            return nil
+        }
+    }
+    
     func connect(to node:Node<T,U>, weight:U?){
         if !self.edges.contains({ $0.node == node }) {
             let newEdge = Edge(to: node, weight: weight)

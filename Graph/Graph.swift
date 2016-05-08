@@ -147,14 +147,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func weight(from nodeFrom:Node<T,U>, to nodeTo:Node<T,U>) -> U? {
-        var weight:U? = nil
-        for edge in nodeFrom.edges {
-            if edge.node == nodeTo {
-                weight = edge.weight
-                break
-            }
-        }
-        return weight
+        return nodeFrom.connection(to: nodeTo)?.weight
     }
     
     func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
