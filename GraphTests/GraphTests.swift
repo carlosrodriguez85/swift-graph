@@ -15,11 +15,12 @@ class GraphTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        let sharedNode:Node<Int,Int> = Node(value:11, edges:[Edge(to: Node(value:3))])
+        let sharedFinalNode:Node<Int,Int> = Node(value:3)
+        let sharedNode:Node<Int,Int> = Node(value:11, edges:[Edge(to: sharedFinalNode)])
         
         // 7 --> 8
         // |
-        //  ---> 11--> 3
+        //  ---> 11 <--> 3
         //       ^
         //       |
         // 5-----
@@ -32,6 +33,8 @@ class GraphTests: XCTestCase {
                 Edge(to: sharedNode)
                 ])
         ])
+        
+        testGraph.connect(edgeFrom: sharedFinalNode, to: sharedNode, weight: 98)
     }
     
     override func tearDown() {
@@ -119,14 +122,14 @@ class GraphTests: XCTestCase {
     }
     
     func testEdgeManagement() {
-        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
+        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
         XCTAssertTrue(testGraph.isAdjacent(node: testGraph[3]!, ancestor: testGraph[11]!))
         
-        testGraph.connect(edgeFrom: testGraph[3]!, to: testGraph[11]!, weight: 48)
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[3]!, ancestor: testGraph[11]!))
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
-        XCTAssertTrue(testGraph.weight(from: testGraph[3]!, to: testGraph[11]!) == 48)
-        XCTAssertNil(testGraph.weight(from: testGraph[11]!, to: testGraph[3]!))
+        testGraph.connect(edgeFrom: testGraph[11]!, to: testGraph[8]!, weight: 48)
+        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[8]!))
+        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[8]!, ancestor: testGraph[11]!))
+        XCTAssertTrue(testGraph.weight(from: testGraph[11]!, to: testGraph[8]!) == 48)
+        XCTAssertNil(testGraph.weight(from: testGraph[8]!, to: testGraph[11]!))
         XCTAssertTrue(testGraph.allNodes.count == 5)
         
         testGraph.disconnect(edgeFrom: testGraph[3]!, to: testGraph[11]!)
@@ -136,7 +139,7 @@ class GraphTests: XCTestCase {
     
     func testDescription() {
         let description = testGraph.description
-        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->(3)\n(3)\n"
+        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->(3)\n(3)->[98](11)\n"
         
         XCTAssertTrue(description == testDescription)
     }
