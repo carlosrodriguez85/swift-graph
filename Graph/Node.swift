@@ -18,17 +18,11 @@ class Node<T:Comparable, U:Comparable> : NSCopying {
     }
     
     @objc func copyWithZone(zone: NSZone) -> AnyObject {
-        var newEdges = [Edge<T,U>]()
-        for edge in edges{
-            let newEdge = edge.copyWithZone(zone) as! Edge<T,U>
-            newEdges.append(newEdge)
-        }
-        
-        return Node(value: value, edges: newEdges)
+        return Node(value: value, edges: edges)
     }
     
     func filterEdges(predicate predicate:(Edge<T,U>)->Bool) {
-        self.edges = self.edges.filter{predicate($0)}.map{$0.copyWithZone(nil) as! Edge<T,U>}
+        self.edges = self.edges.filter{predicate($0)}
     }
 }
 
