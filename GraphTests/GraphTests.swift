@@ -160,6 +160,8 @@ class GraphTests: XCTestCase {
         
         XCTAssertTrue(count == testGraph.allNodes.count)
         XCTAssertTrue(countReverse == testGraph.allNodes.count)
+        XCTAssertTrue(count == 5)
+        XCTAssertTrue(countReverse == 5)
         XCTAssertTrue(allNodes == testGraph.allNodes)
         XCTAssertTrue(reverseAllNodes == testGraph.allNodes.reverse())
     }
