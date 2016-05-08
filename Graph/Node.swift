@@ -32,27 +32,31 @@ extension Node : CustomStringConvertible, Comparable {
             return "(\(value))"
         }
         else if edges.count == 1 {
-            return "(\(value))\(edges.first!)\n"
+            return "(\(value))->\(edges.first!)"
         }
         else{
-            return edges.reduce("(\(value))\n", combine: { $0 + "\t\($1)\n" })
+            var result = "(\(value))->{"
+            for (idx, edge) in edges.enumerate() {
+                if idx+1 == edges.endIndex {
+                    result += "\(edge)}"
+                }
+                else{
+                    result += "\(edge),"
+                }
+            }
+            
+            return result
         }
-    }
-    
-    var neighbours:[Node]{
-        return edges.map{$0.node}
     }
     
     func connect(to node:Node<T,U>, weight:U?){
-        let newEdge = Edge(node: node, weight: weight)
-        edges.append(newEdge)
+        if !self.edges.contains({ $0.node == node }) {
+            let newEdge = Edge(to: node, weight: weight)
+            edges.append(newEdge)
+        }
     }
     
-    func isConnected(to node:Node<T,U>) -> Bool {
-        return neighbours.contains(node)
-    }
-    
-    func remove(edge edge:Edge<T,U>) {
+    func disconnect(edge edge:Edge<T,U>) {
         if let idx = edges.indexOf(edge) {
             edges.removeAtIndex(idx)
         }

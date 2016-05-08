@@ -12,7 +12,7 @@ struct Edge<T:Comparable,U:Comparable> {
     private(set) var node:Node<T, U>
     private(set) var weight:U?
     
-    init(node:Node<T,U>, weight:U? = nil){
+    init(to node:Node<T,U>, weight:U? = nil){
         self.node = node
         self.weight = weight
     }
@@ -21,10 +21,10 @@ struct Edge<T:Comparable,U:Comparable> {
 extension Edge : CustomStringConvertible, Comparable {
     var description:String{
         if let weight = weight {
-            return "-[\(weight)]->\(node)"
+            return "[\(weight)](\(node.value))"
         }
         else{
-            return "-->\(node)"
+            return "(\(node.value))"
         }
     }
 }

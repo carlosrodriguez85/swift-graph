@@ -12,15 +12,23 @@ protocol GraphProtocol {
     associatedtype NodeType : Comparable
     associatedtype WeightType : Comparable
     
-    func isAdjacent(node node:Node<NodeType,WeightType>, ancestor ancestorNode:Node<NodeType,WeightType>) -> Bool
-    func adding(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
+    func ancestors(node node:Node<NodeType,WeightType>) -> [Node<NodeType,WeightType>]?
+    func neighbours(node:Node<NodeType,WeightType>) -> [Node<NodeType,WeightType>]?
+    func isAdjacent(node node:Node<NodeType,WeightType>, ancestor:Node<NodeType,WeightType>) -> Bool
+    func add(node:Node<NodeType,WeightType>)
+    func add(nodeValue nodeValue:NodeType)
+    func adding(node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
     func adding(nodeValue nodeValue:NodeType) -> Graph<NodeType,WeightType>
-    func removing(node node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
+    func connect(edgeFrom edgeFrom:Node<NodeType,WeightType>, to:Node<NodeType,WeightType>, weight:WeightType?)
+    func disconnect(edgeFrom edgeFrom:Node<NodeType,WeightType>, to:Node<NodeType,WeightType>)
+    func weight(from nodeFrom:Node<NodeType,WeightType>, to:Node<NodeType,WeightType>) -> WeightType?
+    func remove(node:Node<NodeType,WeightType>)
+    func removing(node:Node<NodeType,WeightType>) -> Graph<NodeType,WeightType>
     func find(nodeValue nodeValue:NodeType) -> Node<NodeType,WeightType>?
     subscript(nodeValue:NodeType) -> Node<NodeType, WeightType>? { get }
 }
 
-struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
+class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     private var nodes:[Node<T,U>]
     
     init(nodes:[Node<T,U>]){
@@ -44,14 +52,28 @@ struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
         return visitedNodes
     }
     
-    func ancestors(node node:Node<T,U>) -> [Node<T,U>] {
-        var result = [Node<T,U>]()
-        for otherNode in self.allNodes {
-            if otherNode.isConnected(to: node) {
-                result.append(otherNode)
+    func ancestors(node node:Node<T,U>) -> [Node<T,U>]? {
+        if self.allNodes.contains(node){
+            var result = [Node<T,U>]()
+            for otherNode in self.allNodes {
+                if isAdjacent(node: node, ancestor: otherNode) {
+                    result.append(otherNode)
+                }
             }
+            return result
         }
-        return result
+        else{
+            return nil
+        }
+    }
+    
+    func neighbours(node:Node<T,U>) -> [Node<T,U>]? {
+        if self.allNodes.contains(node){
+            return node.edges.map{$0.node}
+        }
+        else{
+            return nil
+        }
     }
     
     private func nextNode(inout visitedNodes visitedNodes:[Node<T,U>], inout lastVisitedNode:Node<T,U>?) -> Node<T,U>? {
@@ -99,18 +121,39 @@ struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
         return nil
     }
     
-    func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
-        for edge in ancestorNode.edges{
-            if edge.node == node{
-                return true
+    func weight(from nodeFrom:Node<T,U>, to nodeTo:Node<T,U>) -> U? {
+        var weight:U? = nil
+        for edge in nodeFrom.edges {
+            if edge.node == nodeTo {
+                weight = edge.weight
+                break
             }
         }
-        
-        return false
+        return weight
     }
     
-    func adding(node node:Node<T,U>) -> Graph<T,U> {
-        return Graph<T,U>(nodes: self.nodes + [node])
+    func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
+        return ancestorNode.edges.map{$0.node}.contains(node)
+    }
+    
+    func add(nodeValue nodeValue: T) {
+        let node = Node<T,U>(value: nodeValue)
+        self.add(node)
+    }
+    
+    func add(node: Node<T, U>) {
+        if !self.allNodes.contains(node) {
+            self.nodes.append(node)
+        }
+    }
+    
+    func adding(node:Node<T,U>) -> Graph<T,U> {
+        if !self.allNodes.contains(node) {
+            return Graph<T,U>(nodes: self.nodes + [node])
+        }
+        else{
+            return self
+        }
     }
     
     func adding(nodeValue nodeValue:T) -> Graph<T,U> {
@@ -118,8 +161,27 @@ struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
         return Graph<T,U>(nodes: self.nodes + [node])
     }
     
+    func connect(edgeFrom edgeFrom: Node<T, U>, to edgeTo: Node<T, U>, weight: U?) {
+        for node in self {
+            if node == edgeFrom {
+                node.connect(to: edgeTo, weight: weight)
+                break
+            }
+        }
+    }
+    
+    func disconnect(edgeFrom edgeFrom:Node<T,U>, to edgeTo:Node<T,U>) {
+        edgeFrom.filterEdges(predicate: {$0.node != edgeTo})
+        for node in self.allNodes {
+            if node == edgeFrom {
+                node.filterEdges(predicate: {$0.node != edgeTo})
+                break
+            }
+        }
+    }
+    
     func find(nodeValue nodeValue:T) -> Node<T,U>? {
-        for node in self.allNodes{
+        for node in self.allNodes {
             if node.value == nodeValue{
                 return node
             }
@@ -128,13 +190,19 @@ struct Graph<T:Comparable, U:Comparable> : GraphProtocol {
         return nil
     }
     
-    func removing(node node: Node<T, U>) -> Graph<T,U> {
+    func remove(node: Node<T, U>) {
+        self.nodes = self.nodes.filter{$0 != node}.map{$0.copyWithZone(nil) as! Node<T,U>}
+        if let ancestors = self.ancestors(node: node) {
+            for ancestor in ancestors {
+                ancestor.filterEdges(predicate: {$0.node != node})
+            }
+        }
+    }
+    
+    func removing(node: Node<T, U>) -> Graph<T,U> {
         let newNodes = self.nodes.filter{$0 != node}.map{$0.copyWithZone(nil) as! Node<T,U>}
         let newGraph = Graph(nodes: newNodes)
-        let ancestors = newGraph.ancestors(node: node)
-        for ancestor in ancestors {
-            ancestor.filterEdges(predicate: {$0.node != node})
-        }
+        newGraph.remove(node)
         
         return newGraph
     }
@@ -146,7 +214,7 @@ extension Graph : CustomStringConvertible {
             return "()"
         }
         else {
-            return nodes.reduce("", combine: {$0+"\($1)"})
+            return allNodes.reduce("", combine: {$0+"\($1)\n"})
         }
     }
 }
