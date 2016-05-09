@@ -76,6 +76,25 @@ class GraphTests: XCTestCase {
         XCTAssert(extendedGraph.allNodes.count == 3)
     }
     
+    func testRemovingANodeDecrementsNodeCount(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        graph.remove(Node(value: 5))
+        XCTAssert(graph.allNodes.count == 1)
+    }
+    
+    func testRemovingANonExistingNodeDoesNothing(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        graph.remove(Node(value: 10))
+        XCTAssert(graph.allNodes.count == 2)
+    }
+    
+    func testRemovingANodeReturnsACopyOfTheGraphWithoutTheNode(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        let smallerGraph = graph.removing(Node(value: 5))
+        XCTAssert(graph.allNodes.count == 2)
+        XCTAssert(smallerGraph.allNodes.count == 1)
+    }
+    
     func testAllNodes() {
         XCTAssertTrue(testGraph.allNodes.count == 5)
         XCTAssertTrue(testGraph.allNodes.contains(testGraph[7]!))
