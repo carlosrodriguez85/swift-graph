@@ -14,7 +14,7 @@ class GraphTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
         let sharedFinalNode:Node<Int,Int> = Node(value:3)
         let sharedNode:Node<Int,Int> = Node(value:11, edges:[Edge(to: sharedFinalNode)])
         
@@ -36,11 +36,6 @@ class GraphTests: XCTestCase {
         
         testGraph.connect(edgeFrom: sharedNode, to: sharedNode, weight: nil)
         testGraph.connect(edgeFrom: sharedFinalNode, to: sharedNode, weight: 98)
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
     }
     
     func testCopy() {
