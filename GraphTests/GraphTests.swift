@@ -38,6 +38,17 @@ class GraphTests: XCTestCase {
         testGraph.connect(edgeFrom: sharedFinalNode, to: sharedNode, weight: 98)
     }
     
+    func testNewGraphShouldHaveAsManyNodesAsItemsInList(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        XCTAssert(graph.allNodes.count == 2)
+    }
+    
+    func testCopiedGraphShouldHaveAsManyNodesAsOriginalGraph(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        let copy = Graph(graph: graph)
+        XCTAssert(graph.allNodes.count == copy.allNodes.count)
+    }
+    
     func testCopy() {
         let newGraph = Graph(graph: testGraph)
         
