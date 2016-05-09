@@ -57,6 +57,25 @@ class GraphTests: XCTestCase {
         XCTAssert(copy.allNodes.count == 2)
     }
     
+    func testAddingANodeIncrementsNodeCount(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        graph.add(nodeValue: 10)
+        XCTAssert(graph.allNodes.count == 3)
+    }
+    
+    func testAddingAnExistingNodeDoesNothing(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        graph.add(nodeValue: 5)
+        XCTAssert(graph.allNodes.count == 2)
+    }
+    
+    func testAddingANodeReturnsACopyOfGraphWithTheNewNode(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        let extendedGraph = graph.adding(nodeValue: 10)
+        XCTAssert(graph.allNodes.count == 2)
+        XCTAssert(extendedGraph.allNodes.count == 3)
+    }
+    
     func testAllNodes() {
         XCTAssertTrue(testGraph.allNodes.count == 5)
         XCTAssertTrue(testGraph.allNodes.contains(testGraph[7]!))
