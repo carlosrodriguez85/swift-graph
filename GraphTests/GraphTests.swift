@@ -107,25 +107,6 @@ class GraphTests: XCTestCase {
         XCTAssert(description == testDescription)
     }
     
-    func testAllNodes() {
-        XCTAssertTrue(testGraph.allNodes.count == 5)
-        XCTAssertTrue(testGraph.allNodes.contains(testGraph[7]!))
-        XCTAssertTrue(testGraph.allNodes.contains(testGraph[8]!))
-        XCTAssertTrue(testGraph.allNodes.contains(testGraph[11]!))
-        XCTAssertTrue(testGraph.allNodes.contains(testGraph[3]!))
-        XCTAssertTrue(testGraph.allNodes.contains(testGraph[5]!))
-        
-        let newGraph = testGraph.adding(nodeValue: 65)
-        XCTAssertTrue(newGraph.allNodes.count == 6)
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[7]!))
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[8]!))
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[11]!))
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[3]!))
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[5]!))
-        XCTAssertTrue(newGraph.allNodes.contains(newGraph[65]!))
-        XCTAssertTrue(testGraph.allNodes.count == 5)
-    }
-    
     func testFind(){
         XCTAssertNotNil(testGraph.find(nodeValue: 11))
         XCTAssertNil(testGraph.find(nodeValue: 35))
