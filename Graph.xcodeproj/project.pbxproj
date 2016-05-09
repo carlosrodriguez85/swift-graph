@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1111E1781CE09FD800DCE366 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF541CDE653300283186 /* Graph.swift */; };
+		1111E1791CE0A02000DCE366 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF561CDF5E5000283186 /* Node.swift */; };
+		1111E17A1CE0A02400DCE366 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF581CDF5F9A00283186 /* Edge.swift */; };
 		8EBADF3E1CDE651400283186 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBADF3D1CDE651400283186 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EBADF451CDE651400283186 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EBADF3A1CDE651400283186 /* Graph.framework */; };
 		8EBADF4A1CDE651400283186 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF491CDE651400283186 /* GraphTests.swift */; };
@@ -213,6 +216,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1111E1791CE0A02000DCE366 /* Node.swift in Sources */,
+				1111E1781CE09FD800DCE366 /* Graph.swift in Sources */,
+				1111E17A1CE0A02400DCE366 /* Edge.swift in Sources */,
 				8EBADF4A1CDE651400283186 /* GraphTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +399,7 @@
 				8EBADF501CDE651400283186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8EBADF511CDE651400283186 /* Build configuration list for PBXNativeTarget "GraphTests" */ = {
 			isa = XCConfigurationList;
@@ -401,6 +408,7 @@
 				8EBADF531CDE651400283186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

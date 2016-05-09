@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Graph
+import Graph
 
 class GraphTests: XCTestCase {
     private var testGraph:Graph<Int,Int>! = nil
