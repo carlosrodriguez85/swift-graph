@@ -49,6 +49,14 @@ class GraphTests: XCTestCase {
         XCTAssert(graph.allNodes.count == copy.allNodes.count)
     }
     
+    func testCopiedGraphShouldNotHaveReferencesToOriginalGraph(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        let copy = Graph(graph: graph)
+        
+        graph.add(nodeValue: 9)
+        XCTAssert(copy.allNodes.count == 2)
+    }
+    
     func testCopy() {
         let newGraph = Graph(graph: testGraph)
         
