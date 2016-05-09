@@ -95,6 +95,18 @@ class GraphTests: XCTestCase {
         XCTAssert(smallerGraph.allNodes.count == 1)
     }
     
+    func testAnEmptyGraphDescriptionShouldBeEmptyParenthesis(){
+        let graph : Graph<Int, Int> = Graph(nodes: [])
+        let description = graph.description
+        XCTAssert(description == "()")
+    }
+    
+    func testANonEmptyGraphDescriptionShouldListOneNodeWithEdgesWithWeighsPerLine() {
+        let description = testGraph.description
+        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->{(3),(11)}\n(3)->[98](11)\n"
+        XCTAssert(description == testDescription)
+    }
+    
     func testAllNodes() {
         XCTAssertTrue(testGraph.allNodes.count == 5)
         XCTAssertTrue(testGraph.allNodes.contains(testGraph[7]!))
@@ -173,13 +185,6 @@ class GraphTests: XCTestCase {
         testGraph.disconnect(edgeFrom: testGraph[3]!, to: testGraph[11]!)
         XCTAssertTrue(testGraph.isAdjacent(node: testGraph[3]!, ancestor: testGraph[11]!))
         XCTAssertFalse(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
-    }
-    
-    func testDescription() {
-        let description = testGraph.description
-        let testDescription = "(7)->{[66](8),(11)}\n(5)->(11)\n(8)\n(11)->{(3),(11)}\n(3)->[98](11)\n"
-        
-        XCTAssertTrue(description == testDescription)
     }
     
     func testIteration() {
