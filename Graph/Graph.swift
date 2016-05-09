@@ -72,7 +72,9 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         var visitedNodes:[Node<T,U>] = []
         var lastVisitedNode:Node<T,U>? = nil
         
-        while let _ = nextNode(visitedNodes: &visitedNodes, lastVisitedNode: &lastVisitedNode){ }
+        while let n = nextNode(visitedNodes: &visitedNodes, lastVisitedNode: &lastVisitedNode){
+            print(n)
+        }
         
         return visitedNodes
     }
@@ -107,7 +109,9 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         }
         else if let node = self.nodes.first where self.nodes.count == 1{
             defer{
-                visitedNodes.append(node)
+                if !visitedNodes.contains(node){
+                    visitedNodes.append(node)
+                }
             }
             return isVisited(node, visitedNodes: visitedNodes) ? nil : node
         }
