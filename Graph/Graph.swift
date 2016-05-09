@@ -72,9 +72,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         var visitedNodes:[Node<T,U>] = []
         var lastVisitedNode:Node<T,U>? = nil
         
-        while let n = nextNode(visitedNodes: &visitedNodes, lastVisitedNode: &lastVisitedNode){
-            print(n)
-        }
+        while let _ = nextNode(visitedNodes: &visitedNodes, lastVisitedNode: &lastVisitedNode){}
         
         return visitedNodes
     }
