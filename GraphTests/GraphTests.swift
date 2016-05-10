@@ -107,12 +107,16 @@ class GraphTests: XCTestCase {
         XCTAssert(description == testDescription)
     }
     
-    func testFind(){
-        XCTAssertNotNil(testGraph.find(nodeValue: 11))
-        XCTAssertNil(testGraph.find(nodeValue: 35))
-        
-        XCTAssertNotNil(testGraph[11])
-        XCTAssertNil(testGraph[35])
+    func testGraphShouldFindNodeIfItIsIncluded(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        XCTAssertNotNil(graph.find(nodeValue: 5))
+        XCTAssertNotNil(graph[5])
+    }
+    
+    func testGraphShouldNotFindNodeIfItIsNotIncluded(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        XCTAssertNil(graph.find(nodeValue: 10))
+        XCTAssertNil(graph[10])
     }
     
     func testAdjacent() {
