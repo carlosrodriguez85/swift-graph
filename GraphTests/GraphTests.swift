@@ -151,42 +151,6 @@ class GraphTests: XCTestCase {
         XCTAssertFalse(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value: 5)))
     }
     
-    func testAddingNode() {
-        let newGraph = testGraph.adding(nodeValue:18)
-        newGraph[18]!.connect(to: newGraph[7]!, weight: 32)
-        
-        XCTAssertTrue(testGraph.allNodes.count == 5)
-        XCTAssertTrue(newGraph.allNodes.count == 6)
-        
-        XCTAssertTrue(newGraph.isAdjacent(node: newGraph[7]!, ancestor: newGraph[18]!))
-        XCTAssertFalse(newGraph.isAdjacent(node: newGraph[18]!, ancestor: newGraph[7]!))
-        
-        XCTAssertFalse(testGraph.ancestors(node: testGraph[7]!)!.contains(newGraph[18]!))
-        
-        testGraph.add(nodeValue: 98)
-        XCTAssertTrue(testGraph.allNodes.count == 6)
-        XCTAssertNotNil(testGraph[98])
-        
-        XCTAssertNil(newGraph[98])
-        XCTAssertTrue(newGraph.allNodes.count == 6)
-    }
-    
-    func testEdgeManagement() {
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[3]!, ancestor: testGraph[11]!))
-        
-        testGraph.connect(edgeFrom: testGraph[11]!, to: testGraph[8]!, weight: 48)
-        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[8]!))
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[8]!, ancestor: testGraph[11]!))
-        XCTAssertTrue(testGraph.weight(from: testGraph[11]!, to: testGraph[8]!) == 48)
-        XCTAssertNil(testGraph.weight(from: testGraph[8]!, to: testGraph[11]!))
-        XCTAssertTrue(testGraph.allNodes.count == 5)
-        
-        testGraph.disconnect(edgeFrom: testGraph[3]!, to: testGraph[11]!)
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[3]!, ancestor: testGraph[11]!))
-        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[3]!))
-    }
-    
     func testIteration() {
         var count = 0
         var countReverse = 0
@@ -218,17 +182,4 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(reverseAllNodes == testGraph.allNodes.reverse())
     }
     
-    func testRemoving() {
-        let newGraph = testGraph.removing(testGraph[11]!)
-        
-        XCTAssertTrue(newGraph.allNodes.count == 3)
-        XCTAssertTrue(testGraph.allNodes.count == 5)
-        
-        XCTAssertNil(newGraph[11])
-        XCTAssertNotNil(testGraph[11])
-        
-        testGraph.remove(testGraph[11]!)
-        XCTAssertNil(testGraph[11])
-        XCTAssertNil(testGraph[3])
-    }
 }
