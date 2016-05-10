@@ -119,12 +119,12 @@ class GraphTests: XCTestCase {
         XCTAssertNil(graph[10])
     }
     
-    func testAdjacent() {
-        XCTAssertTrue(testGraph.isAdjacent(node: testGraph[11]!, ancestor: testGraph[7]!))
-        
-        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[7]!, ancestor: testGraph[11]!))
-        
-        XCTAssertFalse(testGraph.isAdjacent(node: testGraph[7]!, ancestor: testGraph[5]!))
+    func testANodeIsAdjacentToAnotherIfThereIsAnEdgeBetweenThem(){
+        XCTAssertTrue(testGraph.isAdjacent(node: Node(value : 11), ancestor: Node(value : 7)))
+    }
+    
+    func testANodeIsNotAdjacentToAnotherIfThereIsNotAnEdgeBetweenThem(){
+        XCTAssertFalse(testGraph.isAdjacent(node: Node(value : 7), ancestor: Node(value : 11)))
     }
     
     func testNeighbours() {

@@ -153,7 +153,11 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
-        return ancestorNode.edges.map{$0.node}.contains(node)
+        if let ancestor = self[ancestorNode.value], node = self[node.value] {
+            return ancestor.edges.map{$0.node}.contains(node)
+        }else{
+            return false
+        }
     }
     
     func add(nodeValue nodeValue: T) {
