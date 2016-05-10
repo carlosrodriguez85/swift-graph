@@ -137,15 +137,6 @@ class GraphTests: XCTestCase {
         XCTAssert(neighbours?.count == 2)
     }
     
-    func testNeighbours() {
-        let neighbours = testGraph.neighbours(testGraph[7]!)
-        
-        XCTAssertNotNil(neighbours)
-        XCTAssertTrue(neighbours!.contains(testGraph[8]!))
-        XCTAssertTrue(neighbours!.contains(testGraph[11]!))
-        XCTAssertFalse(neighbours!.contains(testGraph[3]!))
-    }
-    
     func testAddingNode() {
         let newGraph = testGraph.adding(nodeValue:18)
         newGraph[18]!.connect(to: newGraph[7]!, weight: 32)
