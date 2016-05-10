@@ -10,6 +10,7 @@
 		1111E1781CE09FD800DCE366 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF541CDE653300283186 /* Graph.swift */; };
 		1111E1791CE0A02000DCE366 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF561CDF5E5000283186 /* Node.swift */; };
 		1111E17A1CE0A02400DCE366 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF581CDF5F9A00283186 /* Edge.swift */; };
+		8E8719271CE243A1007B13C0 /* NodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8719261CE243A1007B13C0 /* NodeTests.swift */; };
 		8EBADF3E1CDE651400283186 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBADF3D1CDE651400283186 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EBADF451CDE651400283186 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EBADF3A1CDE651400283186 /* Graph.framework */; };
 		8EBADF4A1CDE651400283186 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBADF491CDE651400283186 /* GraphTests.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8E8719261CE243A1007B13C0 /* NodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTests.swift; sourceTree = "<group>"; };
 		8EBADF3A1CDE651400283186 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EBADF3D1CDE651400283186 /* Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 		8EBADF3F1CDE651400283186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				8EBADF491CDE651400283186 /* GraphTests.swift */,
+				8E8719261CE243A1007B13C0 /* NodeTests.swift */,
 				8EBADF4B1CDE651400283186 /* Info.plist */,
 			);
 			path = GraphTests;
@@ -217,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1111E1791CE0A02000DCE366 /* Node.swift in Sources */,
+				8E8719271CE243A1007B13C0 /* NodeTests.swift in Sources */,
 				1111E1781CE09FD800DCE366 /* Graph.swift in Sources */,
 				1111E17A1CE0A02400DCE366 /* Edge.swift in Sources */,
 				8EBADF4A1CDE651400283186 /* GraphTests.swift in Sources */,
