@@ -137,6 +137,20 @@ class GraphTests: XCTestCase {
         XCTAssert(neighbours?.count == 2)
     }
     
+    func testConnectingNodesWithAnEdgeMakesThemAdjactent(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
+        XCTAssertFalse(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value : 5)))
+        graph.connect(edgeFrom: Node(value : 5), to: Node(value : 6), weight: nil)
+        XCTAssertTrue(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value : 5)))
+    }
+    
+    func testDisconnectingNodesMakesThemNotToBeAdjacent(){
+        let graph : Graph<Int, Int> = Graph(nodes : [ Node(value: 5, edges: [Edge(to: Node(value : 6))])])
+        XCTAssertTrue(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value: 5)))
+        graph.disconnect(edgeFrom: Node(value : 5), to: Node(value: 6))
+        XCTAssertFalse(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value: 5)))
+    }
+    
     func testAddingNode() {
         let newGraph = testGraph.adding(nodeValue:18)
         newGraph[18]!.connect(to: newGraph[7]!, weight: 32)

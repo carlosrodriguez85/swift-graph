@@ -105,14 +105,6 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         if self.nodes.isEmpty {
             return nil
         }
-        else if let node = self.nodes.first where self.nodes.count == 1{
-            defer{
-                if !visitedNodes.contains(node){
-                    visitedNodes.append(node)
-                }
-            }
-            return isVisited(node, visitedNodes: visitedNodes) ? nil : node
-        }
         else{
             for node in nodes{
                 if !isVisited(node, visitedNodes: visitedNodes) {
@@ -153,8 +145,8 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func isAdjacent(node node:Node<T,U>, ancestor ancestorNode:Node<T,U>) -> Bool {
-        if let ancestor = self[ancestorNode.value], node = self[node.value] {
-            return ancestor.edges.map{$0.node}.contains(node)
+        if let ancestor = self[ancestorNode.value], child = self[node.value] {
+            return ancestor.edges.map{$0.node}.contains(child)
         }else{
             return false
         }
@@ -183,21 +175,14 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func connect(edgeFrom edgeFrom: Node<T, U>, to edgeTo: Node<T, U>, weight: U?) {
-        for node in self {
-            if node == edgeFrom {
-                node.connect(to: edgeTo, weight: weight)
-                break
-            }
+        if let fromNode = self[edgeFrom.value], toNode = self[edgeTo.value] {
+            fromNode.connect(to: toNode, weight: weight)
         }
     }
     
     func disconnect(edgeFrom edgeFrom:Node<T,U>, to edgeTo:Node<T,U>) {
-        edgeFrom.filterEdges(predicate: {$0.node != edgeTo})
-        for node in self.allNodes {
-            if node == edgeFrom {
-                node.filterEdges(predicate: {$0.node != edgeTo})
-                break
-            }
+        if let fromNode = self[edgeFrom.value], toNode = self[edgeTo.value] {
+            fromNode.filterEdges(predicate: {$0.node != toNode})
         }
     }
     
