@@ -12,6 +12,7 @@ protocol GraphProtocol {
     associatedtype NodeType : Comparable
     associatedtype WeightType : Comparable
     
+    var allNodes:[Node<NodeType,WeightType>] {get}
     func ancestors(node node:Node<NodeType,WeightType>) -> [Node<NodeType,WeightType>]?
     func neighbours(node:Node<NodeType,WeightType>) -> [Node<NodeType,WeightType>]?
     func isAdjacent(node node:Node<NodeType,WeightType>, ancestor:Node<NodeType,WeightType>) -> Bool
@@ -35,7 +36,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         self.nodes = nodes
     }
     
-    init(graph:Graph<T,U>){
+    init<GraphImpl:GraphProtocol where GraphImpl.NodeType == T, GraphImpl.WeightType == U>(graph:GraphImpl){
         self.nodes = deepCopyNodes(graph.allNodes)
     }
     
