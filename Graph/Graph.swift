@@ -93,7 +93,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func neighbours(node:Node<T,U>) -> [Node<T,U>]? {
-        if self.allNodes.contains(node){
+        if let node = self[node.value] {
             return node.edges.map{$0.node}
         }
         else{

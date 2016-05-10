@@ -127,6 +127,16 @@ class GraphTests: XCTestCase {
         XCTAssertFalse(testGraph.isAdjacent(node: Node(value : 7), ancestor: Node(value : 11)))
     }
     
+    func testANodeWithoutEdgesHasNoNeighbours(){
+        let neighbours = testGraph.neighbours(Node(value: 8))
+        XCTAssert(neighbours?.count == 0)
+    }
+    
+    func testANodeHasAsManyNeighboursAsOutgoingEdges(){
+        let neighbours = testGraph.neighbours(Node(value: 7))
+        XCTAssert(neighbours?.count == 2)
+    }
+    
     func testNeighbours() {
         let neighbours = testGraph.neighbours(testGraph[7]!)
         
