@@ -151,35 +151,4 @@ class GraphTests: XCTestCase {
         XCTAssertFalse(graph.isAdjacent(node: Node(value : 6), ancestor: Node(value: 5)))
     }
     
-    func testIteration() {
-        var count = 0
-        var countReverse = 0
-        
-        var allNodes:[Node<Int,Int>] = []
-        var reverseAllNodes:[Node<Int,Int>] = []
-        
-        var nodeString:String = ""
-        for node in testGraph {
-            count += 1
-            nodeString += "\(node.value)"
-            allNodes.append(node)
-        }
-        
-        var reverseNodeString:String = ""
-        for node in testGraph.reverse() {
-            countReverse += 1
-            reverseNodeString += "\(node.value)"
-            reverseAllNodes.append(node)
-        }
-        
-        XCTAssertTrue(count == testGraph.allNodes.count)
-        XCTAssertTrue(countReverse == testGraph.allNodes.count)
-        XCTAssertTrue(count == 5)
-        XCTAssertTrue(countReverse == 5)
-        XCTAssertTrue(nodeString == "758113")
-        XCTAssertTrue(reverseNodeString == "311857")
-        XCTAssertTrue(allNodes == testGraph.allNodes)
-        XCTAssertTrue(reverseAllNodes == testGraph.allNodes.reverse())
-    }
-    
 }
