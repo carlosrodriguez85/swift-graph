@@ -59,7 +59,7 @@ extension Node : CustomStringConvertible, Comparable {
         }
     }
     
-    func connect(to node:Node<T,U>, weight:U?){
+    func connect(to node:Node<T,U>, weight:U?) {
         if !self.edges.contains({ $0.node == node }) {
             let newEdge = Edge(to: node, weight: weight)
             edges.append(newEdge)

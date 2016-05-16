@@ -36,11 +36,11 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
         self.nodes = nodes
     }
     
-    init<GraphImpl:GraphProtocol where GraphImpl.NodeType == T, GraphImpl.WeightType == U>(graph:GraphImpl){
-        self.nodes = deepCopyNodes(graph.allNodes)
+    init<GraphImpl:GraphProtocol where GraphImpl.NodeType == T, GraphImpl.WeightType == U>(byCopying graph:GraphImpl){
+        self.nodes = deepCopy(nodes: graph.allNodes)
     }
     
-    private func deepCopyNodes(nodes:[Node<T,U>]) -> [Node<T,U>]{
+    private func deepCopy(nodes nodes:[Node<T,U>]) -> [Node<T,U>]{
         var map:[(original:Node<T,U>, copy:Node<T,U>)] = []
         let result = nodes.map({(node:Node<T,U>) -> Node<T,U> in
             let copy = Node<T,U>(node:node)
@@ -165,7 +165,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func adding(node:Node<T,U>) -> Graph<T,U> {
-        let newGraph = Graph<T,U>(graph: self)
+        let newGraph = Graph<T,U>(byCopying: self)
         newGraph.add(node)
         return newGraph
     }
@@ -207,7 +207,7 @@ class Graph<T:Comparable, U:Comparable> : GraphProtocol {
     }
     
     func removing(node: Node<T, U>) -> Graph<T,U> {
-        let newNodes = deepCopyNodes(self.nodes.filter{$0 != node}.map{Node<T,U>(node:$0)})
+        let newNodes = deepCopy(nodes: self.nodes.filter{$0 != node}.map{Node<T,U>(node:$0)})
         let newGraph = Graph(nodes: newNodes)
         newGraph.remove(node)
         

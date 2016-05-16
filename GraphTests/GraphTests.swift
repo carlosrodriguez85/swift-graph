@@ -45,13 +45,13 @@ class GraphTests: XCTestCase {
     
     func testCopiedGraphShouldHaveAsManyNodesAsOriginalGraph(){
         let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
-        let copy = Graph(graph: graph)
+        let copy = Graph(byCopying: graph)
         XCTAssert(graph.allNodes.count == copy.allNodes.count)
     }
     
     func testCopiedGraphShouldNotHaveReferencesToOriginalGraph(){
         let graph : Graph<Int, Int> = Graph(nodes : [ Node(value : 5), Node(value : 6) ])
-        let copy = Graph(graph: graph)
+        let copy = Graph(byCopying: graph)
         
         graph.add(nodeValue: 9)
         XCTAssert(copy.allNodes.count == 2)
